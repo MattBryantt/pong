@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9217F3C2C58F13B000C18B3 /* CrownController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9217F3B2C58F13B000C18B3 /* CrownController.swift */; };
 		C938284F2C4F98ED002B2040 /* TestApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C938284E2C4F98ED002B2040 /* TestApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C93828542C4F98ED002B2040 /* TestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93828532C4F98ED002B2040 /* TestAppApp.swift */; };
 		C93828562C4F98ED002B2040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93828552C4F98ED002B2040 /* ContentView.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C9217F3B2C58F13B000C18B3 /* CrownController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrownController.swift; sourceTree = "<group>"; };
 		C93828482C4F98ED002B2040 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C938284E2C4F98ED002B2040 /* TestApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TestApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C93828532C4F98ED002B2040 /* TestAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppApp.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				C93828532C4F98ED002B2040 /* TestAppApp.swift */,
 				C93828552C4F98ED002B2040 /* ContentView.swift */,
+				C9217F3B2C58F13B000C18B3 /* CrownController.swift */,
 				C93828572C4F98EF002B2040 /* Assets.xcassets */,
 				C93828592C4F98EF002B2040 /* Preview Content */,
 			);
@@ -311,6 +314,7 @@
 			files = (
 				C93828562C4F98ED002B2040 /* ContentView.swift in Sources */,
 				C93828542C4F98ED002B2040 /* TestAppApp.swift in Sources */,
+				C9217F3C2C58F13B000C18B3 /* CrownController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
