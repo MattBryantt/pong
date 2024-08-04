@@ -11,9 +11,10 @@ import Combine
 struct ContentView: View {
     @State private var ballPosition = CGPoint(x: 0, y: 0)
     @State private var ballVelocity = CGPoint(x: 1.5, y: 1.5)
-    @State private var paddlePosition: CGFloat = 0 // y position
+//    @State private var paddlePosition: CGFloat = 0 // y position
     @State private var screenSize: CGSize = .zero
     @State private var scrollAmount = 0.0
+    @State private var AIamount = 0.0
     
     @State private var playerScore = 0
     @State private var enemyScore = 0
@@ -64,33 +65,32 @@ struct ContentView: View {
         ballPosition.x += ballVelocity.x
         ballPosition.y += ballVelocity.y
 
-        // Bounce off walls
-        if ballPosition.x <= 0 || ballPosition.x >= screenSize.width {
-            ballVelocity.x = -ballVelocity.x
-        }
-
         // Bounce off top
         if ballPosition.y <= 0 || ballPosition.y >= screenSize.height {
             ballVelocity.y = -ballVelocity.y
         }
-
-        // Bounce off paddle
-//        if ballPosition.x >= screenSize.width - 30 { // TODO: Change to collision detection
-//            let innerCalc = (screenSize.height / 2 + scrollAmount)
-//            let tmp = abs(ballPosition.y - innerCalc)
-//            if tmp <= 25 {
-//                ballVelocity.x = -ballVelocity.x
-//            }
-//        }
         
-        if ballVelocity.x >= 0 && ballPosition.x == screenSize.width - 30 {
+        // Bounce off right
+        if ballVelocity.x >= 0 &&
+            ballPosition.x >= screenSize.width - 35 &&
+            ballPosition.x <= screenSize.width - 30 {
             print("Ball position: \(ballPosition.y)")
             print("Paddle position: \(((screenSize.height / 2) + scrollAmount))")
-            if ballPosition.y - ((screenSize.height / 2) + scrollAmount) < 25 + 0.5 {
+            if abs(ballPosition.y - ((screenSize.height / 2) + scrollAmount)) < 35 {
                 ballVelocity.x = -ballVelocity.x
             }
         }
         
+        // Bounce off left
+        if ballVelocity.x <= 0 &&
+            ballPosition.x <= 35 && 
+            ballPosition.x >= 30 {
+            print("Ball position: \(ballPosition.y)")
+            print("Paddle position: \(screenSize.height / 2)")
+            if abs(ballPosition.y - (screenSize.height / 2)) < 35 {
+                ballVelocity.x = -ballVelocity.x
+            }
+        }
         
         // Ball hits left
         if ballPosition.x >= screenSize.width {
