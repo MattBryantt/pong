@@ -15,6 +15,16 @@ struct ContentView: View {
     @State private var scrollAmount = 0.0
     @State private var AIamount = 0.0
     
+    @State private var timer: Timer? = nil
+    @State private var gamePaused = false
+    
+    private var paddleHeight: CGFloat = 50
+    private var paddleWidth: CGFloat = 10
+    
+    private var paddleOffset: CGFloat = 20
+    
+    private var ballSize: CGFloat = 20
+    
     @State private var playerScore = 0
     @State private var enemyScore = 0
     
@@ -23,24 +33,24 @@ struct ContentView: View {
         GeometryReader { geometry in
             ZStack {
                 Rectangle()
-                    .frame(width:10, height: 50) // TODO: Fix doubled code
+                    .frame(width: paddleWidth, height: paddleHeight) // TODO: Fix doubled code
                     .foregroundColor(.green)
-                    .position(x: 20,
+                    .position(x: paddleOffset,
                               y: (geometry.size.height / 2) + AIamount)
                 Rectangle()
                     .frame(width: 10, height: 50)
                     .foregroundColor(.blue)
-                    .position(x: geometry.size.width - 20,
+                    .position(x: geometry.size.width - paddleOffset,
                               y: (geometry.size.height / 2) + scrollAmount)
                     .focusable(true)
                     .digitalCrownRotation($scrollAmount,
-                                          from: -screenSize.height + 90,
-                                          through: screenSize.height - 65, // TODO: Change to screen edge
+                                          from: -screenSize.height + paddleHeight*1.8,
+                                          through: screenSize.height - paddleHeight*1.4,
                                           by: 1.0,
                                           sensitivity: .low,
                                           isHapticFeedbackEnabled: false)
                 Circle()
-                    .frame(width: 20, height: 20)
+                    .frame(width: ballSize, height: ballSize)
                     .foregroundColor(.red)
                     .position(x: ballPosition.x,
                               y: ballPosition.y)
@@ -52,13 +62,25 @@ struct ContentView: View {
                 screenSize = geometry.size
                 startGame()
             }
+            .onTapGesture {
+                if (!gamePaused) {
+                    print("Game Pause")
+                    gamePaused = true
+                    timer?.invalidate()
+                } else {
+                    print("Game Start")
+                    gamePaused = false
+                    startGame()
+                }
+            }
         }
     }
 
     func startGame() {
-        Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
             updateBallPosition()
             updateAIPosition()
+            // print("x: \(ballVelocity.x), y: \(ballVelocity.y)")
         }
     }
 
@@ -74,22 +96,20 @@ struct ContentView: View {
         
         // Bounce off right
         if ballVelocity.x >= 0 &&
-            ballPosition.x >= screenSize.width - 35 &&
-            ballPosition.x <= screenSize.width - 30 {
-            print("Ball position: \(ballPosition.y)")
-            print("Paddle position: \(((screenSize.height / 2) + scrollAmount))")
-            if abs(ballPosition.y - ((screenSize.height / 2) + scrollAmount)) < 35 {
+            ballPosition.x >= screenSize.width - paddleOffset*1.8 &&
+            ballPosition.x <= screenSize.width - paddleOffset*1.5 {
+
+            if abs(ballPosition.y - ((screenSize.height / 2) + scrollAmount)) < paddleHeight*0.7 {
                 ballVelocity.x = -ballVelocity.x
             }
         }
         
         // Bounce off left
         if ballVelocity.x <= 0 &&
-            ballPosition.x <= 35 && 
-            ballPosition.x >= 30 {
-            print("Ball position: \(ballPosition.y)")
-            print("Paddle position: \((screenSize.height / 2) + AIamount)")
-            if abs(ballPosition.y - ((screenSize.height / 2) + AIamount)) < 35 {
+            ballPosition.x <= paddleOffset*1.8 &&
+            ballPosition.x >= paddleOffset*1.5 {
+
+            if abs(ballPosition.y - ((screenSize.height / 2) + AIamount)) < paddleHeight*0.7 {
                 ballVelocity.x = -ballVelocity.x
             }
         }
@@ -112,12 +132,15 @@ struct ContentView: View {
     }
     
     func resetBall() {
+        // timer?.invalidate() // TODO: Create pause on resetBall()
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
-        ballVelocity = CGPoint(x: 1.5,
-                               y: 1.5) // TODO: Fix doubled code
+        let curX = abs(ballVelocity.x)
+        let curY = abs(ballVelocity.y)
+        ballVelocity = CGPoint(x: curX + 0.01,
+                               y: curY + 0.01) // TODO: Fix doubled code
         // TODO: Change to increasing velocity
-        // TODO: Create pause on resetBall()
+        
     }
 }
 
