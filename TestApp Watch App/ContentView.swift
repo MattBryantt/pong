@@ -10,14 +10,15 @@ import Combine
 
 struct ContentView: View {
     @State private var ballPosition = CGPoint(x: 0, y: 0)
-    @State private var ballVelocity = CGPoint(x: 1.5, y: 1.5)
+    @State private var ballVelocity = CGPoint(x: 1.5, y: 1.5) // TODO: First serve bug
     @State private var screenSize: CGSize = .zero
     @State private var scrollAmount = 0.0
     @State private var AIamount = 0.0
     
     @State private var timer: Timer? = nil
     @State private var gamePaused = false
-    @State private var gameOpacity = 100.0
+    @State private var gameOver = false
+    @State private var serveRight = true
     
     private var paddleHeight: CGFloat = 35
     private var paddleWidth: CGFloat = 8
@@ -29,7 +30,6 @@ struct ContentView: View {
     @State private var playerScore = 0
     @State private var enemyScore = 0
     
-
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -41,7 +41,6 @@ struct ContentView: View {
                     .foregroundColor(.green)
                     .position(x: paddleOffset,
                               y: (geometry.size.height / 2) + AIamount)
-                    .opacity(gameOpacity)
                 
                 Rectangle()
                     .frame(width: paddleWidth, height: paddleHeight)
@@ -55,23 +54,33 @@ struct ContentView: View {
                                           by: 1.0,
                                           sensitivity: .low,
                                           isHapticFeedbackEnabled: false)
-                    .opacity(gameOpacity)
+                        .disabled(gamePaused)
                 
                 Circle()
                     .frame(width: ballSize, height: ballSize)
                     .foregroundColor(.red)
                     .position(x: ballPosition.x,
                               y: ballPosition.y)
-                    .opacity(gameOpacity)
                 
-                Text(verbatim: "Score: \(enemyScore) - \(playerScore)")
+                Text("Score: \(enemyScore) - \(playerScore)")
                     .position(x: geometry.size.width / 2,
                               y: 0)
                 
-                if (gameOpacity < 100) {
-                    Text(verbatim: "Game Over!")
+                if (gameOver) {
+                    Text("Game Over!")
                         .position(x: geometry.size.width / 2,
-                                  y: geometry.size.height / 2)
+                                  y: geometry.size.height / 2 - 40)
+                        .background(Color.black.opacity(0.7))
+                    
+                    Button(action: {
+                        // restartGame()
+                        print("Restart")
+                    }) {
+                        Text("Play again?")
+                    }
+                    .frame(width: 175, height: 50)
+                    .position(x: geometry.size.width / 2,
+                              y: geometry.size.height / 2 + 20)
                 }
             }
             
@@ -82,11 +91,9 @@ struct ContentView: View {
             
             .onTapGesture {
                 if (!gamePaused) {
-                    print("Game Pause")
                     gamePaused = true
                     timer?.invalidate()
                 } else {
-                    print("Game Start")
                     gamePaused = false
                     startGame()
                 }
@@ -135,12 +142,15 @@ struct ContentView: View {
         if ballPosition.x >= screenSize.width {
             resetBall()
             enemyScore += 1
+            serveRight = false
+            // Increase velocity
         }
         
         // Ball hits right
         if ballPosition.x <= 0 {
             resetBall()
             playerScore += 1
+            serveRight = true
         }
     }
     
@@ -149,21 +159,23 @@ struct ContentView: View {
     }
     
     func resetBall() {
-        
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
-        let curX = abs(ballVelocity.x)
-        let curY = abs(ballVelocity.y)
-        ballVelocity = CGPoint(x: curX + 0.01,
-                               y: curY + 0.01) // TODO: Fix doubled code
+        
+        if (serveRight) {
+            ballVelocity = CGPoint(x: -1.5, y: -1.5)
+        } else {
+            ballVelocity = CGPoint(x: 1.5, y: 1.5)
+        }
         
         // Pauses game before restart
         timer?.invalidate()
         
-        if (playerScore >= 7 || enemyScore >= 7) {
-            print("Game over")
-            gamePaused = true // TODO: Disable scroll on pause
-            gameOpacity = 50.0 // TODO: Fix opacity
+        // Check if game over
+        if (playerScore >= 6 || enemyScore >= 6) { // TODO: Score bug?
+            print(enemyScore)
+            gamePaused = true
+            gameOver = true
         } else {
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
                 startGame()
