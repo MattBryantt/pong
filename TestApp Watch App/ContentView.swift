@@ -10,7 +10,7 @@ import Combine
 
 struct ContentView: View {
     @State private var ballPosition = CGPoint(x: 0, y: 0)
-    @State private var ballVelocity = CGPoint(x: 1.5, y: 1.5) // TODO: First serve bug
+    @State private var ballVelocity = CGPoint(x: 1.5, y: 1.5)
     @State private var screenSize: CGSize = .zero
     @State private var scrollAmount = 0.0
     @State private var AIamount = 0.0
@@ -73,7 +73,9 @@ struct ContentView: View {
                         .background(Color.black.opacity(0.7))
                     
                     Button(action: {
-                        // restartGame()
+                        startGame()
+                        gameOver = false
+                        gamePaused = false
                         print("Restart")
                     }) {
                         Text("Play again?")
@@ -81,6 +83,11 @@ struct ContentView: View {
                     .frame(width: 175, height: 50)
                     .position(x: geometry.size.width / 2,
                               y: geometry.size.height / 2 + 20)
+                } else if (gamePaused) {
+                    Text("Paused")
+                        .position(x: geometry.size.width / 2,
+                                  y: geometry.size.height / 2 - 20)
+                        .background(Color.black.opacity(0.7))
                 }
             }
             
@@ -90,23 +97,60 @@ struct ContentView: View {
             }
             
             .onTapGesture {
-                if (!gamePaused) {
+                if (!gamePaused) { // TODO: Fix pause bug
                     gamePaused = true
                     timer?.invalidate()
                 } else {
                     gamePaused = false
-                    startGame()
+                    Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in // TODO: Create countdown timer for un-pause
+                        startTimer()
+                    }
                 }
             }
         }
     }
-
+    
+    
     func startGame() {
+        ballPosition = CGPoint(x: screenSize.width / 2,
+                               y: screenSize.height / 2)
+        enemyScore = 0
+        playerScore = 0
+        startTimer()
+    }
+    
+    func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
             updateBallPosition()
             updateAIPosition()
         }
     }
+    
+    func resetBall() {
+        ballPosition = CGPoint(x: screenSize.width / 2,
+                               y: screenSize.height / 2)
+        
+        if (serveRight) {
+            ballVelocity = CGPoint(x: -1.5, y: -1.5)
+        } else {
+            ballVelocity = CGPoint(x: 1.5, y: 1.5)
+        }
+        
+        // Pauses game before restart
+        timer?.invalidate()
+        
+        // Check if game over
+        if (playerScore >= 6 || enemyScore >= 6) { // TODO: Score bug?
+            print(enemyScore)
+            gamePaused = true
+            gameOver = true
+        } else {
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+                startTimer()
+            }
+        }
+    }
+    
 
     func updateBallPosition() {
         ballPosition.x += ballVelocity.x
@@ -156,31 +200,6 @@ struct ContentView: View {
     
     func updateAIPosition() {
         AIamount = ballPosition.x - (screenSize.height / 2) // TODO: Change enemy paddle positioning
-    }
-    
-    func resetBall() {
-        ballPosition = CGPoint(x: screenSize.width / 2,
-                               y: screenSize.height / 2)
-        
-        if (serveRight) {
-            ballVelocity = CGPoint(x: -1.5, y: -1.5)
-        } else {
-            ballVelocity = CGPoint(x: 1.5, y: 1.5)
-        }
-        
-        // Pauses game before restart
-        timer?.invalidate()
-        
-        // Check if game over
-        if (playerScore >= 6 || enemyScore >= 6) { // TODO: Score bug?
-            print(enemyScore)
-            gamePaused = true
-            gameOver = true
-        } else {
-            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
-                startGame()
-            }
-        }
     }
 }
 
