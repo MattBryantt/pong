@@ -16,11 +16,15 @@ struct ContentView: View {
     @State private var AIamount = 0.0
     
     @State private var timer: Timer? = nil
+    @State private var pauseTimer: Timer? = nil
+    
+    // Game States
     @State private var gamePaused = false
+    @State private var gameLoading = false
     @State private var gameOver = false
     @State private var serveRight = true
     
-    private var paddleHeight: CGFloat = 35
+    private var paddleHeight: CGFloat = 25
     private var paddleWidth: CGFloat = 8
     
     private var paddleOffset: CGFloat = 20
@@ -66,7 +70,7 @@ struct ContentView: View {
                     .position(x: geometry.size.width / 2,
                               y: 0)
                 
-                if (gameOver) {
+                if (gameOver) { // TODO: Refactor
                     Text("Game Over!")
                         .position(x: geometry.size.width / 2,
                                   y: geometry.size.height / 2 - 40)
@@ -97,15 +101,29 @@ struct ContentView: View {
             }
             
             .onTapGesture {
-                if (!gamePaused) { // TODO: Fix pause bug
-                    gamePaused = true
-                    timer?.invalidate()
-                } else {
-                    gamePaused = false
-                    Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in // TODO: Create countdown timer for un-pause
-                        startTimer()
-                    }
+                togglePause()
+            }
+        }
+    }
+    
+    
+    //
+    func togglePause() {
+        print("Tap registered, gameLoading = \(gameLoading)")
+        if (!gameLoading) {
+            if (gamePaused) { // TODO: Fix pause bug: Current issue arises when pausing while countdown timer is still processing
+                gamePaused = false
+                gameLoading = true
+                print("gameLoading, exp = true, act = \(gameLoading)")
+                pauseTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+                    startTimer()
+                    gameLoading = false
+                    print("gameLoading, exp = false, act = \(gameLoading)")
                 }
+        
+            } else {
+                gamePaused = true
+                timer?.invalidate()
             }
         }
     }
@@ -114,6 +132,7 @@ struct ContentView: View {
     func startGame() {
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
+        ballVelocity = CGPoint(x: 1.5, y: 1.5)
         enemyScore = 0
         playerScore = 0
         startTimer()
@@ -141,12 +160,14 @@ struct ContentView: View {
         
         // Check if game over
         if (playerScore >= 6 || enemyScore >= 6) { // TODO: Score bug?
-            print(enemyScore)
+            gameLoading = false
             gamePaused = true
             gameOver = true
         } else {
+            gameLoading = true
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
                 startTimer()
+                gameLoading = false
             }
         }
     }
