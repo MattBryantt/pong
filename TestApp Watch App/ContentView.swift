@@ -16,7 +16,6 @@ struct ContentView: View {
     @State private var AIamount = 0.0
     
     @State private var timer: Timer? = nil
-    @State private var pauseTimer: Timer? = nil
     
     // Game States
     @State private var gamePaused = false
@@ -27,8 +26,9 @@ struct ContentView: View {
     private var paddleHeight: CGFloat = 25
     private var paddleWidth: CGFloat = 8
     
+    // Width from edge of screen
     private var paddleOffset: CGFloat = 20
-    
+
     private var ballSize: CGFloat = 15
     
     @State private var playerScore = 0
@@ -107,18 +107,17 @@ struct ContentView: View {
     }
     
     
-    //
+    /*
+     Controls pause mechanism depending on current gameState.
+     */
     func togglePause() {
-        print("Tap registered, gameLoading = \(gameLoading)")
         if (!gameLoading) {
-            if (gamePaused) { // TODO: Fix pause bug: Current issue arises when pausing while countdown timer is still processing
+            if (gamePaused) {
                 gamePaused = false
                 gameLoading = true
-                print("gameLoading, exp = true, act = \(gameLoading)")
-                pauseTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
                     startTimer()
                     gameLoading = false
-                    print("gameLoading, exp = false, act = \(gameLoading)")
                 }
         
             } else {
@@ -128,7 +127,9 @@ struct ContentView: View {
         }
     }
     
-    
+    /*
+     Initialises game functionality.
+     */
     func startGame() {
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
@@ -138,6 +139,9 @@ struct ContentView: View {
         startTimer()
     }
     
+    /*
+     Initialises game loop.
+     */
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
             updateBallPosition()
@@ -149,6 +153,8 @@ struct ContentView: View {
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
         
+        // increaseVelocity()
+        
         if (serveRight) {
             ballVelocity = CGPoint(x: -1.5, y: -1.5)
         } else {
@@ -159,7 +165,7 @@ struct ContentView: View {
         timer?.invalidate()
         
         // Check if game over
-        if (playerScore >= 6 || enemyScore >= 6) { // TODO: Score bug?
+        if (playerScore >= 7 || enemyScore >= 7) {
             gameLoading = false
             gamePaused = true
             gameOver = true
@@ -172,7 +178,9 @@ struct ContentView: View {
         }
     }
     
-
+    /*
+     Repeatedly updates ball position within game loop.
+     */
     func updateBallPosition() {
         ballPosition.x += ballVelocity.x
         ballPosition.y += ballVelocity.y
@@ -183,7 +191,7 @@ struct ContentView: View {
         }
         
         
-        // Bounce off right
+        // Bounce off right paddle
         if ballVelocity.x >= 0 &&
             ballPosition.x >= screenSize.width - (paddleOffset + paddleWidth*1.5) &&
             ballPosition.x <= screenSize.width - (paddleOffset + paddleWidth) {
@@ -193,34 +201,35 @@ struct ContentView: View {
             }
         }
         
-        // Bounce off left
+        // Bounce off left paddle
         if ballVelocity.x <= 0 &&
             ballPosition.x <= (paddleOffset + paddleWidth*1.5) &&
             ballPosition.x >= (paddleOffset + paddleWidth) {
 
             if abs(ballPosition.y - ((screenSize.height / 2) + AIamount)) < paddleHeight*0.7 {
-                ballVelocity.x = -ballVelocity.x
+                ballVelocity.x = -ballVelocity.x // TODO: Add trig to ball bounce
             }
         }
         
-        // Ball hits left
+        // Ball scores left
         if ballPosition.x >= screenSize.width {
-            resetBall()
             enemyScore += 1
             serveRight = false
-            // Increase velocity
+            resetBall()
+            // TODO: Increase velocity
         }
         
-        // Ball hits right
+        // Ball scores right
         if ballPosition.x <= 0 {
-            resetBall()
             playerScore += 1
             serveRight = true
+            resetBall()
         }
     }
     
     func updateAIPosition() {
-        AIamount = ballPosition.x - (screenSize.height / 2) // TODO: Change enemy paddle positioning
+        let offset = ballPosition.y - (screenSize.height / 2)
+        AIamount = (0.5*offset)
     }
 }
 
