@@ -60,7 +60,15 @@ struct ContentView: View {
                                           isHapticFeedbackEnabled: false)
                         .disabled(gamePaused)
                 
-                Circle()
+                //
+//                Circle()
+//                    .frame(width: 2, height: 2)
+//                    .foregroundColor(.yellow)
+//                    .position(x: geometry.size.width - paddleOffset,
+//                              y: (geometry.size.height / 2) + scrollAmount)
+                //
+                
+                Rectangle()
                     .frame(width: ballSize, height: ballSize)
                     .foregroundColor(.red)
                     .position(x: ballPosition.x,
@@ -130,7 +138,7 @@ struct ContentView: View {
     /*
      Initialises game functionality.
      */
-    func startGame() {
+    func startGame() { // TODO: Add pause to start
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
         ballVelocity = CGPoint(x: 1.5, y: 1.5)
@@ -193,21 +201,27 @@ struct ContentView: View {
         
         // Bounce off right paddle
         if ballVelocity.x >= 0 &&
-            ballPosition.x >= screenSize.width - (paddleOffset + paddleWidth*1.5) &&
-            ballPosition.x <= screenSize.width - (paddleOffset + paddleWidth) {
+            ballPosition.x >= screenSize.width - (paddleOffset + paddleWidth/2 + ballSize/2) && // TODO: Fix collision bug
+            ballPosition.x <= screenSize.width - (paddleOffset - paddleWidth/2 + ballSize/2) {
 
-            if abs(ballPosition.y - ((screenSize.height / 2) + scrollAmount)) < paddleHeight*0.7 {
-                ballVelocity.x = -ballVelocity.x
+            if abs(ballPosition.y - ((screenSize.height / 2) + scrollAmount)) < paddleHeight/2 + ballSize/2 {
+                let totalVelocity = sqrt(pow(ballVelocity.x, 2) + pow(ballVelocity.y, 2))
+                let angle = Double.random(in: 0.5...1)
+                ballVelocity.x = -totalVelocity * cos(angle)
+                ballVelocity.y = totalVelocity * sin(angle)
             }
         }
         
         // Bounce off left paddle
         if ballVelocity.x <= 0 &&
-            ballPosition.x <= (paddleOffset + paddleWidth*1.5) &&
-            ballPosition.x >= (paddleOffset + paddleWidth) {
+            ballPosition.x <= (paddleOffset + paddleWidth/2 + ballSize/2) &&
+            ballPosition.x >= (paddleOffset - paddleWidth + ballSize/2) {
 
-            if abs(ballPosition.y - ((screenSize.height / 2) + AIamount)) < paddleHeight*0.7 {
-                ballVelocity.x = -ballVelocity.x // TODO: Add trig to ball bounce
+            if abs(ballPosition.y - ((screenSize.height / 2) + AIamount)) < paddleHeight/2 + ballSize/2 {
+                let totalVelocity = sqrt(pow(ballVelocity.x, 2) + pow(ballVelocity.y, 2))
+                let angle = Double.random(in: 3.5...4)
+                ballVelocity.x = -totalVelocity * cos(angle)
+                ballVelocity.y = totalVelocity * sin(angle)
             }
         }
         
@@ -229,7 +243,13 @@ struct ContentView: View {
     
     func updateAIPosition() {
         let offset = ballPosition.y - (screenSize.height / 2)
-        AIamount = (0.5*offset)
+//        print("offset \(offset)")
+//        var movement = min(abs(offset), 30)
+//        if (offset < 0) {
+//            movement = -movement
+//        }
+//        print("movement \(movement)")
+        AIamount = offset*0.5
     }
 }
 
