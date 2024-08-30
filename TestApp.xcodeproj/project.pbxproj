@@ -15,6 +15,8 @@
 		C93828652C4F98EF002B2040 /* TestApp_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93828642C4F98EF002B2040 /* TestApp_Watch_AppTests.swift */; };
 		C938286F2C4F98EF002B2040 /* TestApp_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938286E2C4F98EF002B2040 /* TestApp_Watch_AppUITests.swift */; };
 		C93828712C4F98EF002B2040 /* TestApp_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93828702C4F98EF002B2040 /* TestApp_Watch_AppUITestsLaunchTests.swift */; };
+		C98262BA2C8130B3002D63CB /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98262B92C8130B3002D63CB /* ScoreView.swift */; };
+		C9A519E92C7C74120099FFC3 /* PaddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A519E82C7C74120099FFC3 /* PaddleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		C938286A2C4F98EF002B2040 /* TestApp Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TestApp Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C938286E2C4F98EF002B2040 /* TestApp_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestApp_Watch_AppUITests.swift; sourceTree = "<group>"; };
 		C93828702C4F98EF002B2040 /* TestApp_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestApp_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C98262B92C8130B3002D63CB /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
+		C9A519E82C7C74120099FFC3 /* PaddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +124,8 @@
 			children = (
 				C93828532C4F98ED002B2040 /* TestAppApp.swift */,
 				C93828552C4F98ED002B2040 /* ContentView.swift */,
+				C9A519E82C7C74120099FFC3 /* PaddleView.swift */,
+				C98262B92C8130B3002D63CB /* ScoreView.swift */,
 				C93828572C4F98EF002B2040 /* Assets.xcassets */,
 				C93828592C4F98EF002B2040 /* Preview Content */,
 			);
@@ -310,6 +316,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C93828562C4F98ED002B2040 /* ContentView.swift in Sources */,
+				C98262BA2C8130B3002D63CB /* ScoreView.swift in Sources */,
+				C9A519E92C7C74120099FFC3 /* PaddleView.swift in Sources */,
 				C93828542C4F98ED002B2040 /* TestAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -492,7 +500,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -523,7 +531,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -577,7 +585,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApp Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TestApp Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -599,7 +607,7 @@
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApp Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TestApp Watch App";
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -619,7 +627,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_TARGET_NAME = "TestApp Watch App";
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -640,7 +648,7 @@
 				TARGETED_DEVICE_FAMILY = 4;
 				TEST_TARGET_NAME = "TestApp Watch App";
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};

@@ -24,12 +24,12 @@ struct ContentView: View {
     @State private var serveRight = true
     
     private var paddleHeight: CGFloat = 25
-    private var paddleWidth: CGFloat = 8
+    private var paddleWidth: CGFloat = 5
     
     // Width from edge of screen
     private var paddleOffset: CGFloat = 20
 
-    private var ballSize: CGFloat = 15
+    private var ballSize: CGFloat = 12
     
     @State private var playerScore = 0
     @State private var enemyScore = 0
@@ -40,21 +40,19 @@ struct ContentView: View {
                 // Background colour (enables tap gesture)
                 Color.black.edgesIgnoringSafeArea(.all)
                 
-                Rectangle()
-                    .frame(width: paddleWidth, height: paddleHeight) // TODO: Fix doubled code
-                    .foregroundColor(.green)
+                // Left Paddle
+                PaddleView(color: .green)
                     .position(x: paddleOffset,
                               y: (geometry.size.height / 2) + AIamount)
                 
-                Rectangle()
-                    .frame(width: paddleWidth, height: paddleHeight)
-                    .foregroundColor(.blue)
+                // Right Paddle
+                PaddleView(color: .blue)
                     .position(x: geometry.size.width - paddleOffset,
                               y: (geometry.size.height / 2) + scrollAmount)
                     .focusable(true)
                     .digitalCrownRotation($scrollAmount,
-                                          from: -screenSize.height + paddleHeight*1.8,
-                                          through: screenSize.height - paddleHeight*1.4,
+                                          from: -screenSize.height/2 + paddleHeight,
+                                          through: screenSize.height/2 - paddleHeight, // TODO: Change height access
                                           by: 1.0,
                                           sensitivity: .low,
                                           isHapticFeedbackEnabled: false)
@@ -68,16 +66,22 @@ struct ContentView: View {
 //                              y: (geometry.size.height / 2) + scrollAmount)
                 //
                 
+                // Ball
                 Rectangle()
                     .frame(width: ballSize, height: ballSize)
                     .foregroundColor(.red)
                     .position(x: ballPosition.x,
                               y: ballPosition.y)
                 
-                Text("Score: \(enemyScore) - \(playerScore)")
-                    .position(x: geometry.size.width / 2,
-                              y: 0)
+                // Score
+                let pos1 = CGPoint(x: (geometry.size.width / 2) - 30, y: 10)
+                ScoreView(score: enemyScore, color: .green, position: pos1)
                 
+                let pos2 = CGPoint(x: (geometry.size.width / 2) + 30, y: 10)
+                ScoreView(score: playerScore, color: .blue, position: pos2)
+
+                
+                // gameOver
                 if (gameOver) { // TODO: Refactor
                     Text("Game Over!")
                         .position(x: geometry.size.width / 2,
@@ -95,6 +99,8 @@ struct ContentView: View {
                     .frame(width: 175, height: 50)
                     .position(x: geometry.size.width / 2,
                               y: geometry.size.height / 2 + 20)
+                    
+                // gamePaused
                 } else if (gamePaused) {
                     Text("Paused")
                         .position(x: geometry.size.width / 2,
@@ -102,7 +108,6 @@ struct ContentView: View {
                         .background(Color.black.opacity(0.7))
                 }
             }
-            
             .onAppear {
                 screenSize = geometry.size
                 startGame()
@@ -112,6 +117,7 @@ struct ContentView: View {
                 togglePause()
             }
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     
@@ -119,7 +125,7 @@ struct ContentView: View {
      Controls pause mechanism depending on current gameState.
      */
     func togglePause() {
-        if (!gameLoading) {
+        if (!gameLoading && !gameOver) {
             if (gamePaused) {
                 gamePaused = false
                 gameLoading = true
@@ -144,7 +150,12 @@ struct ContentView: View {
         ballVelocity = CGPoint(x: 1.5, y: 1.5)
         enemyScore = 0
         playerScore = 0
-        startTimer()
+        
+        gameLoading = true
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+            startTimer()
+            gameLoading = false
+        }
     }
     
     /*
@@ -194,17 +205,20 @@ struct ContentView: View {
         ballPosition.y += ballVelocity.y
 
         // Bounce off bottom & top
-        if ballPosition.y <= 25 || ballPosition.y >= screenSize.height {
+        if ballPosition.y <= ballSize/2 ||
+            ballPosition.y >= screenSize.height - ballSize/2 {
+            
             ballVelocity.y = -ballVelocity.y
         }
         
         
         // Bounce off right paddle
         if ballVelocity.x >= 0 &&
-            ballPosition.x >= screenSize.width - (paddleOffset + paddleWidth/2 + ballSize/2) && // TODO: Fix collision bug
+            ballPosition.x >= screenSize.width - (paddleOffset + paddleWidth/2 + ballSize/2) &&
             ballPosition.x <= screenSize.width - (paddleOffset - paddleWidth/2 + ballSize/2) {
 
             if abs(ballPosition.y - ((screenSize.height / 2) + scrollAmount)) < paddleHeight/2 + ballSize/2 {
+                
                 let totalVelocity = sqrt(pow(ballVelocity.x, 2) + pow(ballVelocity.y, 2))
                 let angle = Double.random(in: 0.5...1)
                 ballVelocity.x = -totalVelocity * cos(angle)
@@ -218,6 +232,7 @@ struct ContentView: View {
             ballPosition.x >= (paddleOffset - paddleWidth + ballSize/2) {
 
             if abs(ballPosition.y - ((screenSize.height / 2) + AIamount)) < paddleHeight/2 + ballSize/2 {
+                
                 let totalVelocity = sqrt(pow(ballVelocity.x, 2) + pow(ballVelocity.y, 2))
                 let angle = Double.random(in: 3.5...4)
                 ballVelocity.x = -totalVelocity * cos(angle)
@@ -242,14 +257,15 @@ struct ContentView: View {
     }
     
     func updateAIPosition() {
-        let offset = ballPosition.y - (screenSize.height / 2)
+        let offset = ballPosition.y - (screenSize.height / 2) // TODO: Take in curPos
+        print(offset)
 //        print("offset \(offset)")
 //        var movement = min(abs(offset), 30)
 //        if (offset < 0) {
 //            movement = -movement
 //        }
 //        print("movement \(movement)")
-        AIamount = offset*0.5
+        AIamount = offset*0.8 // TODO: Change to max function (why does paddle move in wrong direction?)
     }
 }
 
