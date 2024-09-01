@@ -11,6 +11,8 @@ class GameController: ObservableObject {
     
     @Published var ballPosition = CGPoint(x: 1, y: 1)
     @Published var ballVelocity = CGPoint(x: 2, y: 0)
+    @Published var ballTrail = Array(repeating: CGPoint(x: -10, y: -10), count: 10)
+    
     @Published var screenSize: CGSize = .zero
     @Published var AIamount = 0.0
     @Published var scrollAmount = 0.0
@@ -58,9 +60,12 @@ class GameController: ObservableObject {
      Initialises game functionality.
      */
     func startGame() {
+        scrollAmount = 0
+        AIamount = 0
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
         ballVelocity = CGPoint(x: 2, y: 0)
+        
         enemyScore = 0
         playerScore = 0
         
@@ -82,8 +87,15 @@ class GameController: ObservableObject {
     }
     
     func resetBall() {
+        scrollAmount = 0 // TODO: Continuous scrolling bug affecting reset
+        AIamount = 0
+        
         ballPosition = CGPoint(x: screenSize.width / 2,
                                y: screenSize.height / 2)
+        
+        for index in ballTrail.indices {
+            ballTrail[index] = ballPosition
+        }
         
         if (serveRight) {
             ballVelocity = CGPoint(x: -2, y: 0)
@@ -97,7 +109,7 @@ class GameController: ObservableObject {
         // Check if game over
         if (playerScore >= 7 || enemyScore >= 7) {
             gameLoading = false // TODO: Refactor?
-            gamePaused = true
+            gamePaused = false
             gameOver = true
         } else {
             gameLoading = true
@@ -112,6 +124,12 @@ class GameController: ObservableObject {
      Repeatedly updates ball position within game loop.
      */
     func updateBallPosition() {
+        
+        for i in 1...ballTrail.count-1 {
+            ballTrail[ballTrail.count-i] = ballTrail[ballTrail.count-i - 1]
+        }
+        ballTrail[0] = ballPosition
+        
         ballPosition.x += ballVelocity.x
         ballPosition.y += ballVelocity.y
 
@@ -171,13 +189,7 @@ class GameController: ObservableObject {
     }
     
     func updateAIPosition() {
-        let offset = ballPosition.y - (screenSize.height / 2) // TODO: Take in curPos
-//        print("offset \(offset)")
-//        var movement = min(abs(offset), 30)
-//        if (offset < 0) {
-//            movement = -movement
-//        }
-//        print("movement \(movement)")
-        AIamount = offset*0.5 // TODO: Change to max function (why does paddle move in wrong direction?)
+        let offset = ballPosition.y - (screenSize.height / 2)
+        AIamount = offset*0.5
     }
 }

@@ -31,11 +31,13 @@ struct ContentView: View {
                     .focusable(true)
                     .digitalCrownRotation($gameController.scrollAmount,
                                           from: -geometry.size.height/2 + gameController.paddleHeight,
-                                          through: geometry.size.height/2 - gameController.paddleHeight, // TODO: Change height access
+                                          through: geometry.size.height/2 - gameController.paddleHeight,
                                           by: 1.0,
                                           sensitivity: .high,
                                           isHapticFeedbackEnabled: false)
-                        .disabled(gameController.gamePaused)
+                    .disabled(gameController.gamePaused ||
+                              gameController.gameLoading ||
+                              gameController.gameOver)
                 
                 //
 //                Circle()
@@ -46,8 +48,9 @@ struct ContentView: View {
                 //
                 
                 // Ball
-                BallView(ballSize: gameController.ballSize, ballPosition: gameController.ballPosition)
-                // Create array of ball positions
+                BallView(ballSize: gameController.ballSize, 
+                         ballPosition: gameController.ballPosition,
+                         ballTrail: gameController.ballTrail)
                 
                 // Score
                 let pos1 = CGPoint(x: (geometry.size.width / 2) - 30, y: 10)
@@ -57,18 +60,20 @@ struct ContentView: View {
                 ScoreView(score: gameController.playerScore, color: .blue, position: pos2)
                 
                 
-                let centrePos = CGPoint(x: (geometry.size.width / 2), y: (geometry.size.height / 2))
                 if (gameController.gameOver) {
+                    
+                    let centrePos = CGPoint(x: (geometry.size.width / 2), y: (geometry.size.height / 2))
                     GameOverView(position: centrePos, gameController: gameController)
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                        .background(Color.black.opacity(0.7))
                         .position(x: geometry.size.width / 2,
                                   y: geometry.size.height / 2 - 40)
+                    
                 } else if (gameController.gamePaused) {
-                    Text("Paused")
-                        .position(x: geometry.size.width / 2,
-                                  y: geometry.size.height / 2 - 20)
-                        .background(Color.black.opacity(0.7))
+                    
+                    let pos = CGPoint(x: geometry.size.width / 2,
+                                       y: geometry.size.height / 2 - 20)
+                    PauseView(position: pos)
+//                        .background(Color.black.opacity(0.7)) // TODO: Fix background
                 }
             }
             .onAppear {
