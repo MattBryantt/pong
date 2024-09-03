@@ -21,6 +21,7 @@
 		C98262C02C81AA97002D63CB /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98262BF2C81AA97002D63CB /* GameController.swift */; };
 		C98262C22C835F61002D63CB /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98262C12C835F61002D63CB /* PauseView.swift */; };
 		C9A519E92C7C74120099FFC3 /* PaddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A519E82C7C74120099FFC3 /* PaddleView.swift */; };
+		C9FB9FC52C8701CF00E4EB6E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB9FC42C8701CF00E4EB6E /* TextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		C98262BF2C81AA97002D63CB /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		C98262C12C835F61002D63CB /* PauseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseView.swift; sourceTree = "<group>"; };
 		C9A519E82C7C74120099FFC3 /* PaddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddleView.swift; sourceTree = "<group>"; };
+		C9FB9FC42C8701CF00E4EB6E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				C93828552C4F98ED002B2040 /* ContentView.swift */,
 				C98262BF2C81AA97002D63CB /* GameController.swift */,
 				C98262BD2C817F48002D63CB /* GameOverView.swift */,
+				C9FB9FC42C8701CF00E4EB6E /* TextView.swift */,
 				C98262BB2C817C20002D63CB /* BallView.swift */,
 				C9A519E82C7C74120099FFC3 /* PaddleView.swift */,
 				C98262B92C8130B3002D63CB /* ScoreView.swift */,
@@ -333,6 +336,7 @@
 				C98262C22C835F61002D63CB /* PauseView.swift in Sources */,
 				C98262BC2C817C20002D63CB /* BallView.swift in Sources */,
 				C98262BE2C817F48002D63CB /* GameOverView.swift in Sources */,
+				C9FB9FC52C8701CF00E4EB6E /* TextView.swift in Sources */,
 				C93828542C4F98ED002B2040 /* TestAppApp.swift in Sources */,
 				C98262C02C81AA97002D63CB /* GameController.swift in Sources */,
 			);

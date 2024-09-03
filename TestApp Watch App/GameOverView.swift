@@ -19,20 +19,18 @@ struct GameOverView: View {
     }
     
     var body: some View {
-        Text("Game Over!")
-            .position(x: position.x, y: position.y - 20)
-            .frame(width: gameController.screenSize.width,
-                   height: gameController.screenSize.height)
-            .background(Color.black.opacity(0.7)) // TODO: Background not showing
-        
+        let textPos = CGPoint(x: position.x, y: position.y - 20)
+        TextView(text: "Game Over!", font: .title3, colour: .red, position: textPos)
+
         Button(action: {
             gameController.startGame()
-            gameController.gameOver = false // Refactor
+            gameController.gameOver = false // TODO: Refactor
             gameController.gamePaused = false
         }) {
             Text("Play again?")
+                .font(.headline)
         }
-        .frame(width: 175, height: 50)
+        .frame(width: 175, height: 50) // TODO: Remove constant values
         .position(x: position.x, y: position.y + 30)
     }
 }

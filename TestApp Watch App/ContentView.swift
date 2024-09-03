@@ -61,6 +61,7 @@ struct ContentView: View {
                 
                 
                 if (gameController.gameOver) {
+                    Color.black.opacity(0.7).edgesIgnoringSafeArea(.all)
                     
                     let centrePos = CGPoint(x: (geometry.size.width / 2), y: (geometry.size.height / 2))
                     GameOverView(position: centrePos, gameController: gameController)
@@ -69,6 +70,8 @@ struct ContentView: View {
                                   y: geometry.size.height / 2 - 40)
                     
                 } else if (gameController.gamePaused) {
+                    
+                    Color.black.opacity(0.7).edgesIgnoringSafeArea(.all)
                     
                     let pos = CGPoint(x: geometry.size.width / 2,
                                        y: geometry.size.height / 2 - 20)

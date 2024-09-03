@@ -16,18 +16,7 @@ struct PauseView: View {
     }
     
     var body: some View {
-        Text("Paused")
-            .bold()
-            .font(.title3)
-            .foregroundStyle(.red)
-            .position(x: position.x + 2,
-                      y: position.y + 1.5)
-        
-        Text("Paused")
-            .bold()
-            .font(.title3)
-            .foregroundStyle(.white)
-            .position(position)
+        TextView(text: "Paused", font: .title3, colour: .red, position: position)
     }
 }
 
