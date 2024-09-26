@@ -8,11 +8,37 @@
 import SwiftUI
 
 struct OptionsView: View {
+    
+    @EnvironmentObject var gameController: GameController
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Spacer(minLength: 20)
+            
+            Button(action: {
+                gameController.difficulty = .easy
+            }) {
+                Text("Easy")
+                    .font(.headline)
+            }
+            
+            Button(action: {
+                gameController.difficulty = .medium
+            }) {
+                Text("Medium")
+                    .font(.headline)
+            }
+            
+            Button(action: {
+                gameController.difficulty = .hard
+            }) {
+                Text("Hard")
+                    .font(.headline)
+            }
+        }
     }
 }
 
-#Preview {
-    OptionsView()
-}
+//#Preview {
+//    OptionsView()
+//}

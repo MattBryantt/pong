@@ -36,6 +36,17 @@ class GameController: ObservableObject {
     @Published var playerScore = 0
     @Published var enemyScore = 0
     
+    var AISpeed: Double = 0.5
+    
+    enum Difficulty {
+        case easy
+        case medium
+        case hard
+    }
+    
+    var difficulty: Difficulty = .easy
+    
+    
     /*
      Controls pause mechanism depending on current gameState.
      */
@@ -69,6 +80,17 @@ class GameController: ObservableObject {
         enemyScore = 0
         playerScore = 0
         
+        if (difficulty == .easy) {
+            AISpeed = 0.5
+            print("easy")
+        } else if (difficulty == .medium) {
+            AISpeed = 0.6
+            print("medium")
+        } else if (difficulty == .hard) {
+            AISpeed = 0.7
+            print("hard")
+        }
+        
         gameLoading = true
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             self.startTimer()
@@ -87,7 +109,7 @@ class GameController: ObservableObject {
     }
     
     func resetBall() {
-        scrollAmount = 0 // TODO: Continuous scrolling bug affecting reset
+//        scrollAmount = 0 // TODO: Continuous scrolling bug affecting reset
         AIamount = 0
         
         ballPosition = CGPoint(x: screenSize.width / 2,
@@ -124,6 +146,9 @@ class GameController: ObservableObject {
      Repeatedly updates ball position within game loop.
      */
     func updateBallPosition() {
+        
+        let offset = ballPosition.y - (screenSize.height / 2)
+        print(offset)
         
         for i in 1...ballTrail.count-1 {
             ballTrail[ballTrail.count-i] = ballTrail[ballTrail.count-i - 1]
@@ -190,6 +215,6 @@ class GameController: ObservableObject {
     
     func updateAIPosition() {
         let offset = ballPosition.y - (screenSize.height / 2)
-        AIamount = offset*0.5
+        AIamount = offset*AISpeed
     }
 }

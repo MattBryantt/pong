@@ -8,11 +8,50 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @State private var gameStart = false
+    @State private var gameOptions = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            GeometryReader { geometry in
+                TextView(text: "Pong",
+                         font: .title2,
+                         colour: .red,
+                         position: CGPoint(x: geometry.size.width / 2, 
+                                           y: (geometry.size.height / 2) - 60))
+                Button(action: {
+                    gameStart = true
+                }) {
+                    Text("Start!")
+                        .font(.headline)
+                }
+                .position(CGPoint(x: geometry.size.width / 2,
+                                  y: (geometry.size.height / 2) + 10))
+                .frame(width: geometry.size.width / 1.5, height: 20)
+                
+                Button(action: {
+                    gameOptions = true
+                }) {
+                    Text("Options")
+                        .font(.headline)
+                }
+                .position(CGPoint(x: geometry.size.width / 2,
+                                  y: (geometry.size.height / 2) + 70))
+                .frame(width: geometry.size.width / 1.5, height: 20)
+                
+                .navigationDestination(isPresented: $gameStart) {
+                    ContentView()
+                }
+                
+                .navigationDestination(isPresented: $gameOptions) {
+                    OptionsView()
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}

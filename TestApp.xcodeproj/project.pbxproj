@@ -15,6 +15,8 @@
 		C93828652C4F98EF002B2040 /* TestApp_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93828642C4F98EF002B2040 /* TestApp_Watch_AppTests.swift */; };
 		C938286F2C4F98EF002B2040 /* TestApp_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938286E2C4F98EF002B2040 /* TestApp_Watch_AppUITests.swift */; };
 		C93828712C4F98EF002B2040 /* TestApp_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93828702C4F98EF002B2040 /* TestApp_Watch_AppUITestsLaunchTests.swift */; };
+		C94B35C02C9E7E16006A7021 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B35BF2C9E7E16006A7021 /* OptionsView.swift */; };
+		C94F88DC2C9D2FC40046B949 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94F88DB2C9D2FC40046B949 /* HomeView.swift */; };
 		C98262BA2C8130B3002D63CB /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98262B92C8130B3002D63CB /* ScoreView.swift */; };
 		C98262BC2C817C20002D63CB /* BallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98262BB2C817C20002D63CB /* BallView.swift */; };
 		C98262BE2C817F48002D63CB /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98262BD2C817F48002D63CB /* GameOverView.swift */; };
@@ -74,6 +76,8 @@
 		C938286A2C4F98EF002B2040 /* TestApp Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TestApp Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C938286E2C4F98EF002B2040 /* TestApp_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestApp_Watch_AppUITests.swift; sourceTree = "<group>"; };
 		C93828702C4F98EF002B2040 /* TestApp_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestApp_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C94B35BF2C9E7E16006A7021 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
+		C94F88DB2C9D2FC40046B949 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C98262B92C8130B3002D63CB /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		C98262BB2C817C20002D63CB /* BallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallView.swift; sourceTree = "<group>"; };
 		C98262BD2C817F48002D63CB /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
@@ -133,8 +137,10 @@
 			isa = PBXGroup;
 			children = (
 				C93828532C4F98ED002B2040 /* TestAppApp.swift */,
-				C98262C12C835F61002D63CB /* PauseView.swift */,
+				C94F88DB2C9D2FC40046B949 /* HomeView.swift */,
+				C94B35BF2C9E7E16006A7021 /* OptionsView.swift */,
 				C93828552C4F98ED002B2040 /* ContentView.swift */,
+				C98262C12C835F61002D63CB /* PauseView.swift */,
 				C98262BF2C81AA97002D63CB /* GameController.swift */,
 				C98262BD2C817F48002D63CB /* GameOverView.swift */,
 				C9FB9FC42C8701CF00E4EB6E /* TextView.swift */,
@@ -333,10 +339,12 @@
 				C93828562C4F98ED002B2040 /* ContentView.swift in Sources */,
 				C98262BA2C8130B3002D63CB /* ScoreView.swift in Sources */,
 				C9A519E92C7C74120099FFC3 /* PaddleView.swift in Sources */,
+				C94F88DC2C9D2FC40046B949 /* HomeView.swift in Sources */,
 				C98262C22C835F61002D63CB /* PauseView.swift in Sources */,
 				C98262BC2C817C20002D63CB /* BallView.swift in Sources */,
 				C98262BE2C817F48002D63CB /* GameOverView.swift in Sources */,
 				C9FB9FC52C8701CF00E4EB6E /* TextView.swift in Sources */,
+				C94B35C02C9E7E16006A7021 /* OptionsView.swift in Sources */,
 				C93828542C4F98ED002B2040 /* TestAppApp.swift in Sources */,
 				C98262C02C81AA97002D63CB /* GameController.swift in Sources */,
 			);

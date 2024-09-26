@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct TestApp_Watch_AppApp: App {
+    @StateObject var gameController = GameController()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .environmentObject(gameController)
         }
     }
 }

@@ -10,7 +10,7 @@ import Combine
 
 struct ContentView: View {
     
-    @StateObject var gameController = GameController()
+    @EnvironmentObject var gameController: GameController
     @State private var screenSize: CGSize = .zero
         
     var body: some View {
@@ -35,9 +35,7 @@ struct ContentView: View {
                                           by: 1.0,
                                           sensitivity: .high,
                                           isHapticFeedbackEnabled: false)
-                    .disabled(gameController.gamePaused ||
-                              gameController.gameLoading ||
-                              gameController.gameOver)
+                    .disabled(gameController.gameOver)
                 
                 //
 //                Circle()
@@ -81,9 +79,13 @@ struct ContentView: View {
             }
             .onAppear {
                 gameController.screenSize = geometry.size
-                gameController.startGame()
+                gameController.gameOver = false
+                gameController.timer?.invalidate() // TODO: Put in gameController instead
+                gameController.startGame() // TODO: Bugs with concurrent games
             }
-            
+            .onDisappear {
+                gameController.timer?.invalidate() // TODO: Double check necessary?
+            }
             .onTapGesture {
                 gameController.togglePause()
             }
@@ -92,6 +94,6 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}
